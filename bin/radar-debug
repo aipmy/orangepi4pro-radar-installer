@@ -1,0 +1,5 @@
+#!/bin/bash
+trap "echo -e '\n[*] Mengembalikan service normal PM2...'; pm2 start radar-sensor >/dev/null 2>&1; exit 0" SIGINT SIGTERM EXIT
+echo "[!] Menghentikan PM2 process radar-sensor sementara agar port serial bebas..."
+pm2 stop radar-sensor >/dev/null 2>&1
+/home/pim/radar/python3_armhf -u /home/pim/radar/debug_radar.py

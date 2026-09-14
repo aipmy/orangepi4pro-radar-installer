@@ -1,0 +1,83 @@
+# KONFIGURASI PERANGKAT DAN SISTEM MONITORING LALU LINTAS BERBASIS RADAR MICROWAVE (EFEK DOPPLER)
+
+# GUNAKAN DEVID: "0" UNTUK TESTING DATA SENSOR RADAR
+DEVID: "0"                           # ID PERANGKAT UNTUK DITAMPILKAN DI DATABASE PUSAT
+
+# KONFIGURASI SENSOR
+SENSOR_CONFIG:
+  # KONFIGURASI SENSOR DAN DETEKSI KENDARAAN
+  LANES:
+    LEFT: -7                         # JARAK JANGKAUAN SENSOR (kiri) DALAM METER
+    RIGHT: 1                         # JARAK JANGKAUAN SENSOR (kanan) DALAM METER
+  CH_FREQ: 3                          # FREKUENSI CHANNEL (1-5), PASTIKAN MENGGUNAKAN FREKUENSI BERBEDA UNTUK SETIAP RADAR
+  USB_UP: true                        # POSISI USB SAAT PEMASANGAN RADAR (true = atas, false = bawah)
+  V_ANGLE: 15                         # DERJAT SUDUT VERTIKAL PEMASANGAN RADAR
+  H_ANGLE: 0                          # DERJAT SUDUT HORIZONTAL PEMASANGAN RADAR
+  VELOCITY_NEGATIVE: true             # DETEKSI KENDARAAN YANG MENDEKATI RADAR (true = ya, false = tidak)
+  VELOCITY_POSITIVE: true            # DETEKSI KENDARAAN YANG MENJAUHI RADAR (true = ya, false = tidak)
+  TXT_RESULT: false                   # SIMPAN HASIL DETEKSI KE FILE TEKS (true = simpan, false = tidak)
+  RAW_RESULT: false                   # SIMPAN DATA MENTAH RADAR (true = simpan, false = tidak)
+  TRACK_MODE: "standard"                  # MODE PELACAKAN RADAR: "standard" = 40 METER, "fast" = 20 METER
+  USE_USB: false                          # INTERFACE RADAR: true = USB (/dev/ttyUSB0 cfg 115200 + /dev/ttyUSB1 data 921600), false = UART (/dev/serial0)
+
+# KONFIGURASI REST AREA
+REST_AREA:
+  # (Negatif berarti kendaraan di kiri sensor radar)
+  # (Positif berarti kendaraan di kanan sensor radar)
+  DATA_REST_AREA: false                # SIMPAN DATA REST AREA (TRUE / FALSE)
+  X_MINIMUM_NEGATIVE_VELOCITY: -7     # JARAK MINIMUM (METER) UNTUK KENDARAAN MENDEKATI RADAR
+  X_MAXIMUM_NEGATIVE_VELOCITY: 1      # JARAK MAKSIMUM (METER) UNTUK KENDARAAN MENDEKATI RADAR
+  X_MINIMUM_POSITIVE_VELOCITY: -7     # JARAK MINIMUM (METER) UNTUK KENDARAAN MENJAUHI RADAR
+  X_MAXIMUM_POSITIVE_VELOCITY: 1      # JARAK MAKSIMUM (METER) UNTUK KENDARAAN MENJAUHI RADAR
+
+# KONFIGURASI KENDARAAN DAN LAJUR
+KEND_LAJUR:
+  DATA_LAJUR: true                    # SIMPAN DATA LAJUR (true = simpan, false = tidak)
+
+  # === KONFIGURASI JALUR A ===
+  JALUR_A: true                       # AKTIFKAN JALUR A (true = aktif, false = nonaktif)
+  LEBAR_LAJUR_A: 4                    # LEBAR PER LAJUR DI JALUR A (METER)
+  NILAI_BAHU_A: 1                     # NILAI BAHU JALUR A (positif = kanan, negatif = kiri)
+  MAX_JALUR_A: 1                      # BATAS MAKSIMUM PENAMAAN LAJUR UNTUK JALUR A
+  NORMAL_POSISI_A: kanan              # POSISI NORMAL KENDARAAN (Kanan / Kiri)
+  KENDARAAN_NORMAL_JALUR_A: Mendekati # ARAH KENDARAAN DI JALUR A (Mendekati / Menjahui)
+
+  # === KONFIGURASI JALUR B ===
+  JALUR_B: false                      # AKTIFKAN JALUR B (true = aktif, false = nonaktif)
+  LEBAR_LAJUR_B: 4                    # LEBAR PER LAJUR DI JALUR B (METER)
+  MAX_JALUR_B: 2                      # BATAS MAKSIMUM PENAMAAN LAJUR UNTUK JALUR B
+  NILAI_BAHU_B: -3                    # NILAI BAHU JALUR B (negatif = kiri, positif = kanan)
+  NORMAL_POSISI_B: kiri               # POSISI NORMAL KENDARAAN (Kanan / Kiri)
+  KENDARAAN_NORMAL_JALUR_B: Menjahui  # ARAH KENDARAAN DI JALUR B (Mendekati / Menjahui)
+
+# KONFIGURASI MQTT UNTUK KOMUNIKASI DATA
+MQTT_ENABLED: true                    # AKTIFKAN MQTT (true / false)
+MQTT:
+  BROKER: "vpn.jid.jasamarga.com"     # ALAMAT BROKER MQTT
+  PORT: 1883                          # PORT YANG DIGUNAKAN OLEH BROKER MQTT
+  TOPIC: "summary_lajur_v2"           # TOPIK UNTUK KOMUNIKASI DATA
+  USERNAME: "radar-jm"                # NAMA PENGGUNA UNTUK AUTENTIKASI MQTT
+  PASSWORD: "K@t4kunci"               # PASSWORD UNTUK AUTENTIKASI MQTT
+
+# WEBSOCKET UNTUK PENGIRIMAN DATA REAL-TIME
+WEBSOCKET_ENABLED: true               # AKTIFKAN WEBSOCKET (TRUE / FALSE)
+WEBSOCKET: "wss://radar-summary.jasamarga.co.id"  # URL WEBSOCKET UNTUK PENGIRIMAN DATA REAL-TIME
+
+# KONFIGURASI DATABASE UNTUK PENYIMPANAN DATA
+DATABASE:
+  HOST: "127.0.0.1"                   # HOST DATABASE
+  PORT: "3306"                        # PORT DATABASE
+  USER: "pim"                         # NAMA PENGGUNA DATABASE
+  PASSWORD: "K@t4kunci"               # PASSWORD DATABASE
+  DATABASE: "TF"                      # NAMA DATABASE
+
+# KONFIGURASI SERVER UNTUK PENGIRIMAN DATA
+SERVERS:
+  - "http://20.10.20.11:3000"         # SERVER PERTAMA UNTUK PENGIRIMAN DATA
+  # - "https://jid.jasamargalive.com/TF"
+  # - "http://clientapi.jasamargalive.com:3000"
+
+# RETENSI DATA - BERAPA LAMA DATA DISIMPAN
+SAVED:
+  RETENTION: 7                        # JUMLAH HARI UNTUK MENYIMPAN DATA
+
