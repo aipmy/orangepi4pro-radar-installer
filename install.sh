@@ -54,6 +54,8 @@ fi
 
 echo -e "${C_BLUE}[2/8] Menginstal paket dependensi inti OS...${C_RESET}"
 export DEBIAN_FRONTEND=noninteractive
+rm -f /etc/apt/sources.list.d/*backports* 2>/dev/null || true
+sed -i '/backports/d' /etc/apt/sources.list 2>/dev/null || true
 apt-get update -qq
 apt-get install -y -qq \
   curl wget git htop build-essential mariadb-server mariadb-client \
