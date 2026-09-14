@@ -66,8 +66,10 @@ apt-get install -y -qq \
 
 echo -e "${C_BLUE}[3/8] Menginstal Node.js & PM2 Ecosystem...${C_RESET}"
 if ! command -v node >/dev/null 2>&1; then
-  curl -fsSL https://deb.nodesource.com/setup_20.x | bash - >/dev/null 2>&1
-  apt-get install -y nodejs >/dev/null 2>&1
+  echo "Mengunduh Node.js v20.18.0 (arm64)..."
+  curl -fsSL https://nodejs.org/dist/v20.18.0/node-v20.18.0-linux-arm64.tar.xz -o /tmp/node.tar.xz
+  tar -xJf /tmp/node.tar.xz -C /usr/local --strip-components=1
+  rm -f /tmp/node.tar.xz
 fi
 npm install -g pm2 >/dev/null 2>&1 || true
 pm2 install pm2-logrotate >/dev/null 2>&1 || true
